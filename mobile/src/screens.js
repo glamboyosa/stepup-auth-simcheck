@@ -14,12 +14,58 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import { AuthContext } from './context'
 
+import TruSDK from '@tru_id/tru-sdk-react-native'
+
 const Screens = () => {
-  const { screen } = useContext(AuthContext)
+  // server ngrok url
+  const base_url = 'https://b7781a83d353.ngrok.io'
+  const { screen, setScreen } = useContext(AuthContext)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
 
-  const registerHandler = () => {}
+  const errorHandler = ({ title, message }) => {
+    return Alert.alert(title, message, [
+      {
+        text: 'Close',
+        onPress: () => console.log('Alert closed'),
+      },
+    ])
+  }
+  const registerHandler = async () => {
+    const body = { phone_number: phoneNumber }
+
+    setLoading(true)
+
+    console.log('creating PhoneCheck for', body)
+
+    try {
+      const response = await fetch(`${base_url}/api/register`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+      })
+
+      const data = await response.json()
+
+      // open Check URL
+
+      await TruSDK.openCheckUrl(data.checkUrl)
+
+      const resp = await fetch(`${base_url}/api/register`)
+
+      const phoneCheckResult = resp.json()
+
+      if (phoneCheckResult.data.match) {
+        setScreen('login')
+      } else {
+        errorHandler({
+          title: 'Registration Failed',
+          message: 'PhoneCheck match failed. Please contact support',
+        })
+      }
+    } catch (e) {
+      errorHandler({ title: 'Something went wrong', message: e.message })
+    }
+  }
 
   const loginHandler = () => {}
   return (
