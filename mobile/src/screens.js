@@ -8,6 +8,8 @@ import {
   Dimensions,
   TextInput,
   TouchableOpacity,
+  ActivityIndicator,
+  Alert,
 } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
@@ -18,7 +20,7 @@ import TruSDK from '@tru_id/tru-sdk-react-native'
 
 const Screens = () => {
   // server ngrok url
-  const base_url = 'https://b7781a83d353.ngrok.io'
+  const base_url = 'https://2cb3d5b5d0a2.ngrok.io'
   const { screen, setScreen } = useContext(AuthContext)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
@@ -42,27 +44,37 @@ const Screens = () => {
       const response = await fetch(`${base_url}/api/register`, {
         method: 'POST',
         body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
       })
 
       const data = await response.json()
 
+      console.log(data)
       // open Check URL
 
-      await TruSDK.openCheckUrl(data.checkUrl)
+      await TruSDK.openCheckUrl(data.data.checkUrl)
 
-      const resp = await fetch(`${base_url}/api/register`)
+      const resp = await fetch(
+        `${base_url}/api/register?check_id=${data.data.checkId}`,
+      )
 
-      const phoneCheckResult = resp.json()
+      const phoneCheckResult = await resp.json()
 
       if (phoneCheckResult.data.match) {
+        setLoading(false)
+        setPhoneNumber('')
         setScreen('login')
       } else {
+        setLoading(false)
         errorHandler({
           title: 'Registration Failed',
           message: 'PhoneCheck match failed. Please contact support',
         })
       }
     } catch (e) {
+      setLoading(false)
       errorHandler({ title: 'Something went wrong', message: e.message })
     }
   }
@@ -92,9 +104,13 @@ const Screens = () => {
                 setPhoneNumber(value.replace(/\s+/g, ''))
               }
             />
-            <TouchableOpacity onPress={registerHandler} style={styles.button}>
-              <Text style={styles.buttonText}>Register</Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color="#00ff00" />
+            ) : (
+              <TouchableOpacity onPress={registerHandler} style={styles.button}>
+                <Text style={styles.buttonText}>Register</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </SafeAreaView>
       ) : (
@@ -112,9 +128,13 @@ const Screens = () => {
                 setPhoneNumber(value.replace(/\s+/g, ''))
               }
             />
-            <TouchableOpacity onPress={loginHandler} style={styles.button}>
-              <Text style={styles.buttonText}>Login</Text>
-            </TouchableOpacity>
+            {loading ? (
+              <ActivityIndicator size="large" color="#00ff00" />
+            ) : (
+              <TouchableOpacity onPress={loginHandler} style={styles.button}>
+                <Text style={styles.buttonText}>Login</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </SafeAreaView>
       )}

@@ -1,6 +1,7 @@
 const fetch = require('node-fetch')
 
 exports.getPhoneCheck = async (checkId, accessToken) => {
+  console.log('get PhoneCheck')
   const response = await fetch(
     `https://eu.api.tru.id/phone_check/v0.1/checks/${checkId}`,
     {
@@ -11,8 +12,8 @@ exports.getPhoneCheck = async (checkId, accessToken) => {
       },
     },
   )
-
-  const { match } = await response.json()
-
-  return { match }
+  console.log('do we have a response')
+  const data = await response.json()
+console.log(data)
+  return { match: data.match }
 }
