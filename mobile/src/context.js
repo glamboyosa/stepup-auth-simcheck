@@ -1,4 +1,4 @@
-import { createContext, useState } from 'react'
+import React, { createContext, useState } from 'react'
 
 const AuthContext = createContext({
   screen: '',
@@ -9,9 +9,9 @@ const AuthContextProvider = ({ children }) => {
   const [screen, setScreen] = useState('register')
 
   return (
-    <AuthContextProvider value={{ screen, setScreen }}>
+    <AuthContext.Provider value={{ screen, setScreen }}>
       {children}
-    </AuthContextProvider>
+    </AuthContext.Provider>
   )
 }
 

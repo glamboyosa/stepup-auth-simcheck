@@ -7,18 +7,24 @@ import {
   StyleSheet,
   Dimensions,
   TextInput,
+  TouchableOpacity,
 } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
+
 import { AuthContext } from './context'
 
 const Screens = () => {
   const { screen } = useContext(AuthContext)
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const registerHandler = () => {}
+
+  const loginHandler = () => {}
   return (
     <LinearGradient
-      colors={['rgba(253,161, 114,23.6)', 'rgba(242, 82, 120,92)']}
+      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
       useAngle={true}
       angle={0}
       style={{
@@ -34,12 +40,15 @@ const Screens = () => {
               placeholder="Number ex. +448023432345"
               placeholderTextColor="#d3d3d3"
               keyboardType="phone-pad"
-              value={phoneNumber.Value}
+              value={phoneNumber}
               editable={!loading}
               onChangeText={(value) =>
                 setPhoneNumber(value.replace(/\s+/g, ''))
               }
             />
+            <TouchableOpacity onPress={registerHandler} style={styles.button}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       ) : (
@@ -51,12 +60,15 @@ const Screens = () => {
               placeholder="Number ex. +448023432345"
               placeholderTextColor="#d3d3d3"
               keyboardType="phone-pad"
-              value={phoneNumber.Value}
+              value={phoneNumber}
               editable={!loading}
               onChangeText={(value) =>
                 setPhoneNumber(value.replace(/\s+/g, ''))
               }
             />
+            <TouchableOpacity onPress={loginHandler} style={styles.button}>
+              <Text style={styles.buttonText}>Login</Text>
+            </TouchableOpacity>
           </View>
         </SafeAreaView>
       )}
@@ -70,7 +82,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   box: {
-    width: '50%',
+    width: '90%',
     borderRadius: 3,
     backgroundColor: '#fff',
     elevation: 5,
@@ -81,18 +93,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     height: 0.7 * Dimensions.get('window').height,
-    padding: 1.5,
+    padding: 15,
   },
   heading: {
     fontSize: 40,
     fontWeight: 'bold',
     marginBottom: 10,
   },
-  input: {
-    padding: 1.5,
+  textInput: {
+    padding: 15,
     borderRadius: 3,
     backgroundColor: '#fff',
-    elevation: 5,
+    borderColor: '#000',
+    borderWidth: 0.4,
+    elevation: 7,
     shadowColor: '#000',
     shadowOffset: { width: 0.5, height: 1 },
     shadowOpacity: 0.8,
@@ -108,6 +122,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 5,
     marginTop: 10,
+    width: '40%',
+  },
+  buttonText: {
+    color: '#fff',
   },
 })
 
