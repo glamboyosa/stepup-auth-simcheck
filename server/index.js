@@ -8,7 +8,6 @@ const { getPhoneCheck } = require('./helpers/getPhoneCheckResult')
 const app = express()
 
 app.use(express.json())
-app.use(cors())
 app.use(morgan('dev'))
 // global access token variable
 let AccessToken
@@ -40,7 +39,7 @@ app.post('/api/register', async (req, res) => {
       message: 'PhoneCheck created',
     })
   } catch (e) {
-    res.status(400).send({ message: e.message })
+    res.status(500).send({ message: e.message })
   }
 })
 
@@ -59,10 +58,10 @@ app.get('/api/register', async (req, res) => {
     const { match } = await getPhoneCheck(checkId, AccessToken)
 
     console.log(match)
-    res.status(200).send({ data: { match }, message: 'successful match' })
+    res.status(200).send({ data: { match } })
   } catch (e) {
     console.log(JSON.stringify(e))
-    res.status(400).send({ message: e.message })
+    res.status(500).send({ message: e.message })
   }
 })
 

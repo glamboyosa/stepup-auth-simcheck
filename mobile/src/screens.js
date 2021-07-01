@@ -65,7 +65,7 @@ const Screens = () => {
       if (phoneCheckResult.data.match) {
         setLoading(false)
         setPhoneNumber('')
-        setScreen('login')
+        setScreen('home')
       } else {
         setLoading(false)
         errorHandler({
@@ -116,25 +116,7 @@ const Screens = () => {
       ) : (
         <SafeAreaView style={styles.container}>
           <View style={styles.box}>
-            <Text style={styles.heading}>Login</Text>
-            <TextInput
-              style={styles.textInput}
-              placeholder="Number ex. +448023432345"
-              placeholderTextColor="#d3d3d3"
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              editable={!loading}
-              onChangeText={(value) =>
-                setPhoneNumber(value.replace(/\s+/g, ''))
-              }
-            />
-            {loading ? (
-              <ActivityIndicator size="large" color="#00ff00" />
-            ) : (
-              <TouchableOpacity onPress={loginHandler} style={styles.button}>
-                <Text style={styles.buttonText}>Login</Text>
-              </TouchableOpacity>
-            )}
+            <Text style={styles.heading}>Home 🏡</Text>
           </View>
         </SafeAreaView>
       )}
