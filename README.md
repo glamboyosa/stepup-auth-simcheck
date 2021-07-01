@@ -37,18 +37,6 @@ Create a new project via:
 tru projects:create passwordless-auth-phonecheck --project-dir .
 ```
 
-Next you need to setup the server.
-
-Copy the values of `.env.example` into a `.env` file via:
-
-```bash
-cd server && cp .env.example .env
-```
-
-configure the following values in your `.env`:
-
-`TRU_ID_CLIENT`: The client ID found in the `tru.json` file in the root directory.
-`TRU_ID_SECRET`: The client secret found in the `tru.json` file in the root directory.
 
 ## Starting Project
 

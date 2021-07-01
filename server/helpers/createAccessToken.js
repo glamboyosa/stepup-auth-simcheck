@@ -2,7 +2,7 @@ const fetch = require('node-fetch')
 const path = require('path')
 exports.createAccessToken = async () => {
   // make request body acceptable by application/x-www-form-urlencoded
-  const truIdConfig = path.join(__dirname, '../tru.json')
+  const truIdConfig = path.join(__dirname, '../../tru.json')
   const clientId = truIdConfig.credentials[0].client_id
   const clientSecret = truIdConfig.credentials[0].client_secret
 
