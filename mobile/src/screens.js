@@ -79,7 +79,6 @@ const Screens = () => {
     }
   }
 
-  const loginHandler = () => {}
   return (
     <LinearGradient
       colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
