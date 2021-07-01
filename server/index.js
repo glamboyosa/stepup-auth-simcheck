@@ -15,13 +15,12 @@ let AccessToken
 app.post('/api/register', async (req, res) => {
   const { phone_number: phoneNumber } = req.body
 
-  // create access token
-  const accessToken = await createAccessToken()
-
   // store access token to global variable
   AccessToken = accessToken
 
   try {
+    // create access token
+    const accessToken = await createAccessToken()
     // create PhoneCheck resource
 
     const { checkId, checkUrl, numberSupported } = await createPhoneCheck(
@@ -49,11 +48,10 @@ app.get('/api/register', async (req, res) => {
   // get the `check_id` from the query parameter
   const { check_id: checkId } = req.query
 
-  if (!AccessToken) {
-    res.status(400).send({ message: 'No Access Token Found' })
-    return
-  }
   try {
+    // create access token
+    const accessToken = await createAccessToken()
+
     // get the PhoneCheck response
     const { match } = await getPhoneCheck(checkId, AccessToken)
 
