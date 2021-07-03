@@ -1,7 +1,5 @@
 const express = require('express')
-const cors = require('cors')
 const morgan = require('morgan')
-const { createAccessToken } = require('./helpers/createAccessToken')
 const { createPhoneCheck } = require('./helpers/createPhoneCheck')
 const { getPhoneCheck } = require('./helpers/getPhoneCheckResult')
 
@@ -9,23 +7,15 @@ const app = express()
 
 app.use(express.json())
 app.use(morgan('dev'))
-// global access token variable
-let AccessToken
 // create PhoneCheck
 app.post('/api/register', async (req, res) => {
   const { phone_number: phoneNumber } = req.body
 
-  // store access token to global variable
-  AccessToken = accessToken
-
   try {
-    // create access token
-    const accessToken = await createAccessToken()
     // create PhoneCheck resource
 
     const { checkId, checkUrl, numberSupported } = await createPhoneCheck(
       phoneNumber,
-      accessToken,
     )
 
     if (!numberSupported) {
@@ -49,11 +39,8 @@ app.get('/api/register', async (req, res) => {
   const { check_id: checkId } = req.query
 
   try {
-    // create access token
-    const accessToken = await createAccessToken()
-
     // get the PhoneCheck response
-    const { match } = await getPhoneCheck(checkId, AccessToken)
+    const { match } = await getPhoneCheck(checkId)
 
     console.log(match)
     res.status(200).send({ data: { match } })
