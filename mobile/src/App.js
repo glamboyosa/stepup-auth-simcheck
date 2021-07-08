@@ -2,7 +2,7 @@ import 'react-native-gesture-handler'
 
 import React from 'react'
 
-import Screens from './screens'
+import Screens from './screens/Screens'
 
 import LinearGradient from 'react-native-linear-gradient'
 const App = () => (
