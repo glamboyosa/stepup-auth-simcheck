@@ -1,10 +1,21 @@
 import React from 'react'
+
 import { SafeAreaView, View, Text, StyleSheet } from 'react-native'
+
+import LinearGradient from 'react-native-linear-gradient'
 
 const Home = ({ route, navigation }) => {
   const { params } = route
   const { name, phoneNumber } = params
   return (
+     <LinearGradient
+      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+      useAngle={true}
+      angle={0}
+      style={{
+        flex: 1,
+      }}
+    >
     <SafeAreaView style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.heading}>Home 🏡</Text>
@@ -16,6 +27,7 @@ const Home = ({ route, navigation }) => {
         </View>
       </View>
     </SafeAreaView>
+</LinearGradient>
   )
 }
 const styles = StyleSheet.create({
@@ -45,11 +57,13 @@ const styles = StyleSheet.create({
   },
   list: {
     flexDirection: 'row',
-    justifyContent: 'space-around',
-    marginBottom: 10,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
   },
   content: {
     fontSize: 20,
+    marginRight: 25,
   },
   button: {
     alignItems: 'center',
@@ -60,7 +74,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 5,
     marginTop: 10,
-    width: '40%',
+    width: '25%',
   },
   buttonText: {
     color: '#000',
