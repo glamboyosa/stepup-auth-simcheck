@@ -76,13 +76,16 @@ const Edit = ({ route }) => {
       console.log('creating SubscriberCheck for', body)
 
       try {
-        const response = await fetch(`${base_url}/api/edit?value=phone_number`, {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${base_url}/api/edit?value=phone_number`,
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        })
+        )
 
         const data = await response.json()
 
@@ -140,15 +143,6 @@ const Edit = ({ route }) => {
             />
           )}
 
-          <TextInput
-            style={styles.textInput}
-            placeholder="Number ex. +448023432345"
-            placeholderTextColor="#d3d3d3"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            editable={!loading}
-            onChangeText={(value) => setPhoneNumber(value.replace(/\s+/g, ''))}
-          />
           {loading ? (
             <ActivityIndicator
               style={styles.spinner}
