@@ -11,120 +11,32 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native'
+import LinearGradient from 'react-native-linear-gradient'
 
-import TruSDK from '@tru_id/tru-sdk-react-native'
+
 const Edit = ({ route }) => {
-  const base_url = 'https://2cb3d5b5d0a2.ngrok.io'
+  const base_url = 'https://serverngrokurl.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
-  const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
-  const [name, setName] = useState(usersName)
-  const [loading, setLoading] = useState(false)
-
-  const errorHandler = ({ title, message }) => {
-    return Alert.alert(title, message, [
-      {
-        text: 'Close',
-        onPress: () => console.log('Alert closed'),
-      },
-    ])
-  }
-  const successHandler = (value) =>
-    Alert.alert('Edit Successful!', `Successfully edited ${value}`, [
-      {
-        text: 'Close',
-      },
-    ])
-  const editHandler = () => {
-    // check if it's the user's name that was edited
-    if (name) {
-      const body = { name }
-
-      setLoading(true)
-
-      console.log('creating SIMCheck for', body)
-
-      try {
-        const response = await fetch(`${base_url}/api/edit?value=name`, {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        })
-
-        const simCheckResult = await response.json()
-
-        console.log(simCheckResult)
-        if (simCheckResult.data.no_sim_change) {
-          successHandler('name')
-        } else {
-          errorHandler({
-            title: 'Something went wrong',
-            message: 'Failed to edit name.',
-          })
-        }
-      } catch (e) {
-        setLoading(false)
-        errorHandler({ title: 'Something went wrong', message: e.message })
-      }
-    } else if (phoneNumber) {
-      const body = { phone_number: phoneNumber }
-
-      setLoading(true)
-
-      console.log('creating SubscriberCheck for', body)
-
-      try {
-        const response = await fetch(
-          `${base_url}/api/edit?value=phone_number`,
-          {
-            method: 'POST',
-            body: JSON.stringify(body),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          },
-        )
-
-        const data = await response.json()
-
-        console.log(data)
-        // open Check URL
-
-        await TruSDK.openCheckUrl(data.data.checkUrl)
-
-        const resp = await fetch(
-          `${base_url}/api/edit?check_id=${data.data.checkId}`,
-        )
-
-        const SubscriberCheckResult = await resp.json()
-
-        if (
-          SubscriberCheckResult.data.no_sim_change &&
-          SubscriberCheckResult.data.match
-        ) {
-          successHandler('number')
-        } else {
-          errorHandler({
-            title: 'Something went wrong',
-            message: 'Failed to edit phone number',
-          })
-        }
-      } catch (e) {
-        setLoading(false)
-        errorHandler({ title: 'Something went wrong', message: e.message })
-      }
-    }
+ 
     return (
+        <LinearGradient
+      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+      useAngle={true}
+      angle={0}
+      style={{
+        flex: 1,
+      }}
+    >
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Edit</Text>
         </View>
       </SafeAreaView>
+    </LinearGradient>
     )
   }
-}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -157,6 +69,8 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 0.4,
     elevation: 7,
+    width: 0.7 * Dimensions.get('window').width,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0.5, height: 1 },
     shadowOpacity: 0.8,
@@ -178,7 +92,7 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
   },
 })
 export default Edit
