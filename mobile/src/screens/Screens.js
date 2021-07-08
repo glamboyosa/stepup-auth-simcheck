@@ -10,18 +10,17 @@ const Stack = createStackNavigator()
 
 const Screens = () => (
   <NavigationContainer>
-    <Stack.Navigator>
+    <Stack.Navigator
+      screenOptions={{
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: 'rgba(242, 82, 120,95)',
+        },
+      }}
+    >
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Home" component={Home} />
-      <Stack.Screen
-        name="Edit"
-        component={Edit}
-        options={({ navigation }) => ({
-          headerLeft: () => (
-            <Text onPress={() => navigation.goBack()}> Back </Text>
-          ),
-        })}
-      />
+      <Stack.Screen name="Edit" component={Edit} />
     </Stack.Navigator>
   </NavigationContainer>
 )

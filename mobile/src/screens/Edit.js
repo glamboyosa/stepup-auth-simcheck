@@ -12,9 +12,11 @@ import {
   Alert,
 } from 'react-native'
 
+import LinearGradient from 'react-native-linear-gradient'
+
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route }) => {
-  const base_url = 'https://2cb3d5b5d0a2.ngrok.io'
+  const base_url = 'https://74604160374a.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -35,7 +37,8 @@ const Edit = ({ route }) => {
         text: 'Close',
       },
     ])
-  const editHandler = () => {
+
+  const editHandler = async () => {
     // check if it's the user's name that was edited
     if (name) {
       const body = { name }
@@ -56,9 +59,11 @@ const Edit = ({ route }) => {
         const simCheckResult = await response.json()
 
         console.log(simCheckResult)
-        if (simCheckResult.data.no_sim_change) {
+        if (!simCheckResult.data.simChanged) {
+          setLoading(false)
           successHandler('name')
         } else {
+          setLoading(false)
           errorHandler({
             title: 'Something went wrong',
             message: 'Failed to edit name.',
@@ -101,11 +106,13 @@ const Edit = ({ route }) => {
         const SubscriberCheckResult = await resp.json()
 
         if (
-          SubscriberCheckResult.data.no_sim_change &&
+          !SubscriberCheckResult.data.simChanged &&
           SubscriberCheckResult.data.match
         ) {
+          setLoading(false)
           successHandler('number')
         } else {
+          setLoading(false)
           errorHandler({
             title: 'Something went wrong',
             message: 'Failed to edit phone number',
@@ -116,7 +123,16 @@ const Edit = ({ route }) => {
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     }
-    return (
+  }
+  return (
+    <LinearGradient
+      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+      useAngle={true}
+      angle={0}
+      style={{
+        flex: 1,
+      }}
+    >
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Edit</Text>
@@ -127,7 +143,7 @@ const Edit = ({ route }) => {
               placeholderTextColor="#d3d3d3"
               value={name}
               editable={!loading}
-              onChangeText={(value) => setName(value.replace(/\s+/g, ''))}
+              onChangeText={(value) => setName(value)}
             />
           ) : (
             <TextInput
@@ -156,9 +172,10 @@ const Edit = ({ route }) => {
           )}
         </View>
       </SafeAreaView>
-    )
-  }
+    </LinearGradient>
+  )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -191,6 +208,8 @@ const styles = StyleSheet.create({
     borderColor: '#000',
     borderWidth: 0.4,
     elevation: 7,
+    width: 0.7 * Dimensions.get('window').width,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0.5, height: 1 },
     shadowOpacity: 0.8,
@@ -212,7 +231,7 @@ const styles = StyleSheet.create({
     width: '40%',
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
   },
 })
 export default Edit

@@ -4,18 +4,6 @@ import React from 'react'
 
 import Screens from './screens/Screens'
 
-import LinearGradient from 'react-native-linear-gradient'
-const App = () => (
-  <LinearGradient
-    colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
-    useAngle={true}
-    angle={0}
-    style={{
-      flex: 1,
-    }}
-  >
-    <Screens />
-  </LinearGradient>
-)
+const App = () => <Screens />
 
 export default App
