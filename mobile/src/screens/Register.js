@@ -12,6 +12,10 @@ import {
   Alert,
 } from 'react-native'
 
+import LinearGradient from 'react-native-linear-gradient'
+
+import TruSDK from '@tru_id/tru-sdk-react-native'
+
 const Register = ({ navigation }) => {
   // server ngrok url
   const base_url = 'https://serverngrokurl.ngrok.io'
@@ -77,6 +81,14 @@ const Register = ({ navigation }) => {
   }
 
   return (
+       <LinearGradient
+      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+      useAngle={true}
+      angle={0}
+      style={{
+        flex: 1,
+      }}
+    >
     <SafeAreaView style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.heading}>Register</Text>
@@ -102,6 +114,7 @@ const Register = ({ navigation }) => {
         )}
       </View>
     </SafeAreaView>
+</LinearGradient>
   )
 }
 const styles = StyleSheet.create({
@@ -134,8 +147,10 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     backgroundColor: '#fff',
     borderColor: '#000',
+    width: 0.7 * Dimensions.get('window').width,
     borderWidth: 0.4,
     elevation: 7,
+    marginBottom: 20,
     shadowColor: '#000',
     shadowOffset: { width: 0.5, height: 1 },
     shadowOpacity: 0.8,
@@ -143,7 +158,7 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   spinner: {
-    marginTop: 12,
+    marginTop: 20,
   },
   button: {
     alignItems: 'center',
@@ -153,12 +168,11 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 5,
-    marginTop: 14,
+    marginTop: 17,
     width: '40%',
   },
   buttonText: {
-    color: '#fff',
+    color: '#000',
   },
 })
-
 export default Register
