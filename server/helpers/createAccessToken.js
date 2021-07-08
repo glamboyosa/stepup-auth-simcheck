@@ -1,7 +1,7 @@
 const fetch = require('node-fetch')
 const path = require('path')
 const { readFileSync } = require('fs')
-exports.createAccessToken = async () => {
+exports.createAccessToken = async (scope) => {
   // make request body acceptable by application/x-www-form-urlencoded
   const truIdConfigPath = path.join(__dirname, '../../tru.json')
   console.log(truIdConfigPath)
@@ -15,7 +15,7 @@ exports.createAccessToken = async () => {
   )
   const resp = await fetch(`https://eu.api.tru.id/oauth2/v1/token`, {
     method: 'POST',
-    body: 'grant_type=client_credentials&scope=phone_check',
+    body: `grant_type=client_credentials&scope=${scope}`,
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
       Authorization: `Basic ${basicAuth}`,

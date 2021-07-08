@@ -1,12 +1,21 @@
+import 'react-native-gesture-handler'
+
 import React from 'react'
 
 import Screens from './screens'
 
-import AuthContextProvider from './context'
+import LinearGradient from 'react-native-linear-gradient'
 const App = () => (
-  <AuthContextProvider>
+  <LinearGradient
+    colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+    useAngle={true}
+    angle={0}
+    style={{
+      flex: 1,
+    }}
+  >
     <Screens />
-  </AuthContextProvider>
+  </LinearGradient>
 )
 
 export default App
