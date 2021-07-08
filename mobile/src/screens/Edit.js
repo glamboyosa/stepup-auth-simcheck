@@ -76,13 +76,16 @@ const Edit = ({ route }) => {
       console.log('creating SubscriberCheck for', body)
 
       try {
-        const response = await fetch(`${base_url}/api/edit?value=phone_number`, {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${base_url}/api/edit?value=phone_number`,
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        })
+        )
 
         const data = await response.json()
 
@@ -117,49 +120,6 @@ const Edit = ({ route }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Edit</Text>
-          {name && !phoneNumber ? (
-            <TextInput
-              style={styles.textInput}
-              placeholder="Name"
-              placeholderTextColor="#d3d3d3"
-              value={name}
-              editable={!loading}
-              onChangeText={(value) => setName(value.replace(/\s+/g, ''))}
-            />
-          ) : (
-            <TextInput
-              style={styles.textInput}
-              placeholder="Number ex. +448023432345"
-              placeholderTextColor="#d3d3d3"
-              keyboardType="phone-pad"
-              value={phoneNumber}
-              editable={!loading}
-              onChangeText={(value) =>
-                setPhoneNumber(value.replace(/\s+/g, ''))
-              }
-            />
-          )}
-
-          <TextInput
-            style={styles.textInput}
-            placeholder="Number ex. +448023432345"
-            placeholderTextColor="#d3d3d3"
-            keyboardType="phone-pad"
-            value={phoneNumber}
-            editable={!loading}
-            onChangeText={(value) => setPhoneNumber(value.replace(/\s+/g, ''))}
-          />
-          {loading ? (
-            <ActivityIndicator
-              style={styles.spinner}
-              size="large"
-              color="#00ff00"
-            />
-          ) : (
-            <TouchableOpacity onPress={editHandler} style={styles.button}>
-              <Text style={styles.buttonText}>Edit</Text>
-            </TouchableOpacity>
-          )}
         </View>
       </SafeAreaView>
     )

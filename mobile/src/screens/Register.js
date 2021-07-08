@@ -14,7 +14,7 @@ import {
 
 const Register = ({ navigation }) => {
   // server ngrok url
-  const base_url = 'https://2cb3d5b5d0a2.ngrok.io'
+  const base_url = 'https://serverngrokurl.ngrok.io'
   const [phoneNumber, setPhoneNumber] = useState('')
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -28,7 +28,7 @@ const Register = ({ navigation }) => {
     ])
   }
   const registerHandler = async () => {
-    const body = { phone_number: phoneNumber, name }
+    const body = { phone_number: phoneNumber }
 
     setLoading(true)
 
@@ -80,14 +80,6 @@ const Register = ({ navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.heading}>Register</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Name"
-          placeholderTextColor="#d3d3d3"
-          value={name}
-          editable={!loading}
-          onChangeText={(value) => setName(value.replace(/\s+/g, ''))}
-        />
         <TextInput
           style={styles.textInput}
           placeholder="Number ex. +448023432345"

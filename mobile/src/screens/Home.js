@@ -10,29 +10,9 @@ const Home = ({ route, navigation }) => {
         <Text style={styles.heading}>Home 🏡</Text>
         <View style={styles.list}>
           <Text style={styles.content}>{name}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Edit', {
-                name,
-              })
-            }
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Edit</Text>
-          </TouchableOpacity>
         </View>
         <View style={styles.list}>
           <Text style={styles.content}>{phoneNumber}</Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Edit', {
-                phoneNumber,
-              })
-            }
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Edit</Text>
-          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
