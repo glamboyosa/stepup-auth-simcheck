@@ -1,12 +1,8 @@
 const fetch = require('node-fetch')
-const path = require('path')
-const { readFileSync } = require('fs')
+const truIdConfig = require('../../tru.json')
+
 exports.createAccessToken = async (scope) => {
   // make request body acceptable by application/x-www-form-urlencoded
-  const truIdConfigPath = path.join(__dirname, '../../tru.json')
-  console.log(truIdConfigPath)
-  const data = readFileSync(truIdConfigPath, 'utf-8')
-  const truIdConfig = JSON.parse(data)
   const clientId = truIdConfig.credentials[0].client_id
   const clientSecret = truIdConfig.credentials[0].client_secret
 
