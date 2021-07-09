@@ -100,7 +100,7 @@ const Edit = ({ route }) => {
         await TruSDK.openCheckUrl(data.data.checkUrl)
 
         const resp = await fetch(
-          `${base_url}/api/edit?check_id=${data.data.checkId}`,
+          `${base_url}/api/edit?check_id=${data.data.checkId}&phone_number=${data.data.phoneNumber}`,
         )
 
         const SubscriberCheckResult = await resp.json()
