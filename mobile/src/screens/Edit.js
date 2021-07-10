@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route }) => {
-  const base_url = 'https://74604160374a.ngrok.io'
+  const base_url = 'https://d435bb959d10.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -61,7 +61,14 @@ const Edit = ({ route }) => {
         console.log(simCheckResult)
         if (!simCheckResult.data.simChanged) {
           setLoading(false)
+
           successHandler('name')
+
+          navigation.navigate({
+            name: 'Home',
+            params: { name: simCheckResult.data.name },
+            merge: true,
+          })
         } else {
           setLoading(false)
           errorHandler({
@@ -95,6 +102,7 @@ const Edit = ({ route }) => {
         const data = await response.json()
 
         console.log(data)
+
         // open Check URL
 
         await TruSDK.openCheckUrl(data.data.checkUrl)
@@ -111,6 +119,7 @@ const Edit = ({ route }) => {
         ) {
           setLoading(false)
           successHandler('number')
+          navigation.navigate('Home')
         } else {
           setLoading(false)
           errorHandler({

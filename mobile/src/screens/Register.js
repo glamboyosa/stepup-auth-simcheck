@@ -17,9 +17,8 @@ import LinearGradient from 'react-native-linear-gradient'
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Register = ({ navigation }) => {
   // server ngrok url
-  const base_url = 'https://74604160374a.ngrok.io'
+  const base_url = 'https://d435bb959d10.ngrok.io'
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
 
   const errorHandler = ({ title, message }) => {
@@ -30,54 +29,61 @@ const Register = ({ navigation }) => {
       },
     ])
   }
-  const registerHandler = async () => {
-    const body = { phone_number: phoneNumber, name }
-
-    setLoading(true)
-
-    console.log('creating PhoneCheck for', body)
-
-    try {
-      const response = await fetch(`${base_url}/api/register`, {
-        method: 'POST',
-        body: JSON.stringify(body),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      })
-
-      const data = await response.json()
-
-      console.log(data)
-      // open Check URL
-
-      await TruSDK.openCheckUrl(data.data.checkUrl)
-
-      const resp = await fetch(
-        `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}&name=${name}`,
-      )
-
-      const phoneCheckResult = await resp.json()
-
-      if (phoneCheckResult.data.match) {
-        setLoading(false)
-        setPhoneNumber('')
-        navigation.navigate('Home', {
-          name,
-          phoneNumber,
-        })
-      } else {
-        setLoading(false)
-        errorHandler({
-          title: 'Registration Failed',
-          message: 'PhoneCheck match failed. Please contact support',
-        })
-      }
-    } catch (e) {
-      setLoading(false)
-      errorHandler({ title: 'Something went wrong', message: e.message })
-    }
+  const registerHandler = () => {
+    navigation.navigate('Home', {
+      phoneNumber,
+    })
   }
+  // const registerHandler = async () => {
+  //   const body = { phone_number: phoneNumber }
+
+  //   setLoading(true)
+
+  //   console.log('creating PhoneCheck for', body)
+
+  //   try {
+  //     const response = await fetch(`${base_url}/api/register`, {
+  //       method: 'POST',
+  //       body: JSON.stringify(body),
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //     })
+
+  //     const data = await response.json()
+
+  //     console.log(data)
+
+  //     // open Check URL
+
+  //     await TruSDK.openCheckUrl(data.data.checkUrl)
+
+  //     const resp = await fetch(
+  //       `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
+  //     )
+
+  //     const phoneCheckResult = await resp.json()
+
+  //     console.log(phoneCheckResult)
+
+  //     if (phoneCheckResult.data.match) {
+  //       setLoading(false)
+  //       setPhoneNumber('')
+  //       navigation.navigate('Home', {
+  //         phoneNumber,
+  //       })
+  //     } else {
+  //       setLoading(false)
+  //       errorHandler({
+  //         title: 'Registration Failed',
+  //         message: 'PhoneCheck match failed. Please contact support',
+  //       })
+  //     }
+  //   } catch (e) {
+  //     setLoading(false)
+  //     errorHandler({ title: 'Something went wrong', message: e.message })
+  //   }
+  // }
 
   return (
     <LinearGradient
@@ -91,14 +97,6 @@ const Register = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Register</Text>
-          <TextInput
-            style={styles.textInput}
-            placeholder="Name"
-            placeholderTextColor="#d3d3d3"
-            value={name}
-            editable={!loading}
-            onChangeText={(value) => setName(value)}
-          />
           <TextInput
             style={styles.textInput}
             placeholder="Number ex. +448023432345"

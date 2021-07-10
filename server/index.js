@@ -25,14 +25,13 @@ app.post('/api/register', async (req, res) => {
     )
 
     if (!numberSupported) {
-      res.status(400).send({ message: 'number not supported' })
-
-      return
+      return res.status(400).send({ message: 'number not supported' })
+    } else {
+      return res.status(201).send({
+        data: { checkId, checkUrl },
+        message: 'PhoneCheck created',
+      })
     }
-    res.status(201).send({
-      data: { checkId, checkUrl },
-      message: 'PhoneCheck created',
-    })
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
@@ -43,7 +42,7 @@ app.post('/api/register', async (req, res) => {
 
 app.get('/api/register', async (req, res) => {
   // get the `check_id` from the query parameter
-  const { check_id: checkId, phone_number, name } = req.query
+  const { check_id: checkId, phone_number } = req.query
 
   try {
     // get the PhoneCheck response
@@ -51,7 +50,7 @@ app.get('/api/register', async (req, res) => {
     if (match) {
       const users = await get('users')
 
-      // check if there is a mobile token
+      // check if there is are users
       if (users) {
         const oldUsers = JSON.parse(users)
         // check if we have a user with that phone number, get it and also filter out the existing user from or array
@@ -64,10 +63,9 @@ app.get('/api/register', async (req, res) => {
           (el) => el.phone_number !== phone_number,
         )
 
-        // check if we have users, if we do, update the fcm_token and device_id
+        // check if we have users, if we do, update the phone number
         if (existingUser) {
           existingUser.phone_number = phone_number
-          existingUser.name = name
 
           // add the updated user back and set the users to redis
 
@@ -78,10 +76,13 @@ app.get('/api/register', async (req, res) => {
             60 * 60 * 24 * 7,
             JSON.stringify(updatedUsers),
           )
+          return res
+            .status(200)
+            .send({ data: { match, phoneNumber: phone_number } })
         }
+        // we have old users but user has never registered before
         const userProperties = {
           phone_number,
-          name,
         }
         oldUsers.push(userProperties)
 
@@ -89,14 +90,13 @@ app.get('/api/register', async (req, res) => {
       } else {
         const userProperties = {
           phone_number,
-          name,
         }
         const users = []
         users.push(userProperties)
         redisClient.setex('users', 60 * 60 * 24 * 7, JSON.stringify(users))
       }
     }
-    res.status(200).send({ data: { match } })
+    res.status(200).send({ data: { match, phoneNumber: phone_number } })
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
@@ -132,7 +132,7 @@ app.post('/api/edit', async (req, res) => {
         )
         return res
           .status(201)
-          .send({ data: { simChanged }, message: 'SIMCheck created' })
+          .send({ data: { simChanged, name }, message: 'SIMCheck created' })
       }
     } else if (value === 'phone_number') {
       const { checkId, checkUrl } = await createSubscriberCheck(phone_number)
@@ -176,7 +176,9 @@ app.get('/api/edit', async (req, res) => {
       }
     }
 
-    res.status(200).send({ data: { match, simChanged } })
+    res
+      .status(200)
+      .send({ data: { match, simChanged, phoneNumber: phone_number } })
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
