@@ -19,12 +19,6 @@ const Home = ({ route, navigation }) => {
     <SafeAreaView style={styles.container}>
       <View style={styles.box}>
         <Text style={styles.heading}>Home 🏡</Text>
-        <View style={styles.list}>
-          <Text style={styles.content}>{name}</Text>
-        </View>
-        <View style={styles.list}>
-          <Text style={styles.content}>{phoneNumber}</Text>
-        </View>
       </View>
     </SafeAreaView>
 </LinearGradient>
@@ -47,13 +41,32 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    height: 0.7 * Dimensions.get('window').height,
+    height: 0.6 * Dimensions.get('window').height,
     padding: 15,
+  },
+  textInput: {
+    padding: 15,
+    borderRadius: 3,
+    backgroundColor: '#fff',
+    borderColor: '#000',
+    width: 0.5 * Dimensions.get('window').width,
+    borderWidth: 0.4,
+    elevation: 7,
+    marginBottom: 20,
+    shadowColor: '#000',
+    shadowOffset: { width: 0.5, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 1,
+    color: '#000',
   },
   heading: {
     fontSize: 40,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  label: {
+    color: 'grey',
+    fontSize: 10,
   },
   list: {
     flexDirection: 'row',
@@ -69,11 +82,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#00ff7f',
+    marginTop: -15,
     color: '#000',
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 5,
-    marginTop: 10,
     width: '25%',
   },
   buttonText: {
