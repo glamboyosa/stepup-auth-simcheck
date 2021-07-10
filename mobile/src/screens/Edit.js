@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route }) => {
-  const base_url = 'https://d435bb959d10.ngrok.io'
+  const base_url = 'https://1277554bb799.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -35,6 +35,15 @@ const Edit = ({ route }) => {
     Alert.alert('Edit Successful!', `Successfully edited ${value}`, [
       {
         text: 'Close',
+        onPress: () => {
+          value === 'name'
+            ? navigation.navigate({
+                name: 'Home',
+                params: { name: simCheckResult.data.name },
+                merge: true,
+              })
+            : navigation.navigate('Home')
+        },
       },
     ])
 
@@ -119,7 +128,6 @@ const Edit = ({ route }) => {
         ) {
           setLoading(false)
           successHandler('number')
-          navigation.navigate('Home')
         } else {
           setLoading(false)
           errorHandler({
@@ -145,7 +153,7 @@ const Edit = ({ route }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Edit</Text>
-          {name && !phoneNumber ? (
+          {name || (!name && !phoneNumber) ? (
             <TextInput
               style={styles.textInput}
               placeholder="Name"
