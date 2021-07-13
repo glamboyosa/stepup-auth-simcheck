@@ -20,8 +20,8 @@ const Edit = ({ route }) => {
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
  
     return (
-        <LinearGradient
-      colors={['rgba(253,161, 114,23)', 'rgba(242, 82, 120,92)']}
+     <LinearGradient
+      colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
       useAngle={true}
       angle={0}
       style={{
@@ -66,33 +66,34 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 3,
     backgroundColor: '#fff',
-    borderColor: '#000',
+    borderColor: '#858585',
     borderWidth: 0.4,
     elevation: 7,
-    width: 0.7 * Dimensions.get('window').width,
-    marginBottom: 20,
-    shadowColor: '#000',
+    shadowColor: '#858585',
     shadowOffset: { width: 0.5, height: 1 },
     shadowOpacity: 0.8,
     shadowRadius: 1,
     color: '#000',
+    width: 0.7 * Dimensions.get('window').width,
   },
   spinner: {
-    marginTop: 12,
+    marginTop: 20,
   },
   button: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#00ff7f',
+    backgroundColor: '#1955ff',
     color: '#fff',
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 5,
-    marginTop: 14,
+    borderWidth: 2,
+    borderColor: '#1955ff',
+    marginTop: 17,
     width: '40%',
   },
   buttonText: {
-    color: '#000',
+    color: '#fff',
   },
 })
 export default Edit
