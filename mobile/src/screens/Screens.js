@@ -14,7 +14,7 @@ const Screens = () => (
       screenOptions={{
         headerTitleAlign: 'center',
         headerStyle: {
-          backgroundColor: 'rgba(242, 82, 120,95)',
+          backgroundColor: 'rgba(10, 10, 50, 66)',
         },
       }}
     >
