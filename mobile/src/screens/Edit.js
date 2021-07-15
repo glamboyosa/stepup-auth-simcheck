@@ -13,14 +13,13 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-
 const Edit = ({ route }) => {
   const base_url = 'https://serverngrokurl.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
- 
-    return (
-     <LinearGradient
+  const editHandler = () => {}
+  return (
+    <LinearGradient
       colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
       useAngle={true}
       angle={0}
@@ -34,8 +33,8 @@ const Edit = ({ route }) => {
         </View>
       </SafeAreaView>
     </LinearGradient>
-    )
-  }
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
