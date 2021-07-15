@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     color: '#000',
-    width: 0.7 * Dimensions.get('window').width,
+    width: 0.5 * Dimensions.get('window').width,
   },
   heading: {
     fontSize: 40,
