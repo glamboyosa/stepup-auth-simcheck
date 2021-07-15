@@ -13,7 +13,7 @@ import {
 } from 'react-native'
 import LinearGradient from 'react-native-linear-gradient'
 
-const Edit = ({ route }) => {
+const Edit = ({ route, navigation }) => {
   const base_url = 'https://serverngrokurl.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
