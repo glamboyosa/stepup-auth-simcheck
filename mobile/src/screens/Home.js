@@ -9,19 +9,19 @@ const Home = ({ route, navigation }) => {
   const { name, phoneNumber } = params
   return (
     <LinearGradient
-    colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
-    useAngle={true}
-    angle={0}
-    style={{
-      flex: 1,
-    }}
-  >
-    <SafeAreaView style={styles.container}>
-      <View style={styles.box}>
-        <Text style={styles.heading}>Home 🏡</Text>
-      </View>
-    </SafeAreaView>
-</LinearGradient>
+      colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
+      useAngle={true}
+      angle={0}
+      style={{
+        flex: 1,
+      }}
+    >
+      <SafeAreaView style={styles.container}>
+        <View style={styles.box}>
+          <Text style={styles.heading}>Home 🏡</Text>
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 const styles = StyleSheet.create({
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.8,
     shadowRadius: 1,
     color: '#000',
-    width: 0.7 * Dimensions.get('window').width,
+    width: 0.5 * Dimensions.get('window').width,
   },
   heading: {
     fontSize: 40,
@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: '#1955ff',
     marginTop: 17,
-    width: '40%',,
+    width: '40%',
   },
   buttonText: {
     color: '#fff',
