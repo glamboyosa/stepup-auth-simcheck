@@ -30,61 +30,57 @@ const Register = ({ navigation }) => {
       },
     ])
   }
-  const registerHandler = () => {
-    navigation.navigate('Home', {
-      phoneNumber: '+442233444444',
-    })
+
+  const registerHandler = async () => {
+    const body = { phone_number: phoneNumber }
+
+    setLoading(true)
+
+    console.log('creating PhoneCheck for', body)
+
+    try {
+      const response = await fetch(`${base_url}/api/register`, {
+        method: 'POST',
+        body: JSON.stringify(body),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+
+      const data = await response.json()
+
+      console.log(data)
+
+      // open Check URL
+
+      await TruSDK.openCheckUrl(data.data.checkUrl)
+
+      const resp = await fetch(
+        `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
+      )
+
+      const phoneCheckResult = await resp.json()
+
+      console.log(phoneCheckResult)
+
+      if (phoneCheckResult.data.match) {
+        setLoading(false)
+        setPhoneNumber('')
+        navigation.navigate('Home', {
+          phoneNumber,
+        })
+      } else {
+        setLoading(false)
+        errorHandler({
+          title: 'Registration Failed',
+          message: 'PhoneCheck match failed. Please contact support',
+        })
+      }
+    } catch (e) {
+      setLoading(false)
+      errorHandler({ title: 'Something went wrong', message: e.message })
+    }
   }
-  // const registerHandler = async () => {
-  //   const body = { phone_number: phoneNumber }
-
-  //   setLoading(true)
-
-  //   console.log('creating PhoneCheck for', body)
-
-  //   try {
-  //     const response = await fetch(`${base_url}/api/register`, {
-  //       method: 'POST',
-  //       body: JSON.stringify(body),
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //     })
-
-  //     const data = await response.json()
-
-  //     console.log(data)
-
-  //     // open Check URL
-
-  //     await TruSDK.openCheckUrl(data.data.checkUrl)
-
-  //     const resp = await fetch(
-  //       `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
-  //     )
-
-  //     const phoneCheckResult = await resp.json()
-
-  //     console.log(phoneCheckResult)
-
-  //     if (phoneCheckResult.data.match) {
-  //       setLoading(false)
-  //       setPhoneNumber('')
-  //       navigation.navigate('Home', {
-  //         phoneNumber,
-  //       })
-  //     } else {
-  //       setLoading(false)
-  //       errorHandler({
-  //         title: 'Registration Failed',
-  //         message: 'PhoneCheck match failed. Please contact support',
-  //       })
-  //     }
-  //   } catch (e) {
-  //     setLoading(false)
-  //     errorHandler({ title: 'Something went wrong', message: e.message })
-  //   }
-  // }
 
   return (
     <LinearGradient
