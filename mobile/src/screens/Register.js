@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
+  Image
 } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
