@@ -41,6 +41,7 @@ const Home = ({ route, navigation }) => {
                 onPress={() =>
                   navigation.navigate('Edit', {
                     name,
+                    phoneNumber,
                   })
                 }
                 style={styles.button}

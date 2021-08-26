@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://1277554bb799.ngrok.io'
+  const base_url = 'https://a4c8-129-18-193-45.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -39,18 +39,22 @@ const Edit = ({ route, navigation }) => {
           value === 'name'
             ? navigation.navigate({
                 name: 'Home',
-                params: { name: name },
+                params: { name },
                 merge: true,
               })
-            : navigation.navigate('Home')
+            : navigation.navigate({
+                name: 'Home',
+                params: { phoneNumber },
+                merge: true,
+              })
         },
       },
     ])
 
   const editHandler = async () => {
-    // check if it's the user's name that was edited
-    if (name) {
-      const body = { name }
+    // check if it's the user's name that was edited and we also passed in a phone number prop from the previous route
+    if (name && usersPhoneNumber) {
+      const body = { name, phone_number: usersPhoneNumber }
 
       setLoading(true)
 
@@ -68,13 +72,11 @@ const Edit = ({ route, navigation }) => {
         const simCheckResult = await response.json()
 
         console.log(simCheckResult)
-        
+
         if (!simCheckResult.data.simChanged) {
           setLoading(false)
 
           successHandler('name')
-
-      
         } else {
           setLoading(false)
           errorHandler({
@@ -114,7 +116,7 @@ const Edit = ({ route, navigation }) => {
         await TruSDK.openCheckUrl(data.data.checkUrl)
 
         const resp = await fetch(
-          `${base_url}/api/edit?check_id=${data.data.checkId}&phone_number=${data.data.phoneNumber}`,
+          `${base_url}/api/edit?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
         )
 
         const SubscriberCheckResult = await resp.json()
