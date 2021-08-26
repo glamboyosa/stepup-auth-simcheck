@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://a4c8-129-18-193-45.ngrok.io'
+  const base_url = 'https://2903-129-18-193-45.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)

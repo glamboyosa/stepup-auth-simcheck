@@ -53,7 +53,7 @@ app.get('/api/register', async (req, res) => {
       // check if there is are users
       if (users) {
         const oldUsers = JSON.parse(users)
-        // check if we have a user with that phone number, get it and also filter out the existing user from or array
+        // check if we have a user with that phone number, get it and also filter out the existing user from our array
         // POINT BEING THE USER WANTS TO RE-REGISTER WITH THE SAME PHONE NUMBER
         const existingUser = oldUsers.find(
           (el) => el.phone_number === phone_number,
@@ -112,27 +112,41 @@ app.post('/api/edit', async (req, res) => {
       if (users) {
         const currentUsers = JSON.parse(users)
 
-        const currentUser = currentUsers.find((el) => el.name === name)
-        console.log(currentUser.phone_number.trim())
-        const { simChanged } = await createSimCheck(
-          currentUser.phone_number.trim(),
+        const currentUser = currentUsers.find(
+          (el) => el.phone_number === phone_number,
         )
-        //update the users name
-        const updatedUsers = currentUsers.map((el) => {
-          if (el.name === name) {
-            el.name = name
-          }
-          return el
-        })
 
-        redisClient.setex(
-          'users',
-          60 * 60 * 24 * 7,
-          JSON.stringify(updatedUsers),
+        const otherUsers = currentUsers.filter(
+          (el) => el.phone_number !== phone_number,
         )
-        return res
-          .status(201)
-          .send({ data: { simChanged, name }, message: 'SIMCheck created' })
+        // if we have a user with that phone number, update phone number
+        if (currentUser) {
+          console.log(currentUser.phone_number.trim())
+          const { simChanged } = await createSimCheck(
+            currentUser.phone_number.trim(),
+          )
+          //update the users name if SIM has not changed recently and add user back into users array
+
+          if (!simChanged) {
+            currentUser.name = name
+
+            const updatedUsers = otherUsers.push(currentUser)
+
+            redisClient.setex(
+              'users',
+              60 * 60 * 24 * 7,
+              JSON.stringify(updatedUsers),
+            )
+            return res.status(201).send({
+              data: { simChanged, name },
+              message: 'SIMCheck created',
+            })
+          }
+          return res.status(201).send({
+            data: { simChanged, name },
+            message: 'SIMCheck created',
+          })
+        }
       }
     } else if (value === 'phone_number') {
       const { checkId, checkUrl } = await createSubscriberCheck(phone_number)

@@ -18,7 +18,7 @@ import LinearGradient from 'react-native-linear-gradient'
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Register = ({ navigation }) => {
   // server ngrok url
-  const base_url = 'https://a4c8-129-18-193-45.ngrok.io'
+  const base_url = 'https://2903-129-18-193-45.ngrok.io'
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
 
