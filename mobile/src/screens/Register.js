@@ -65,7 +65,8 @@ const Register = ({ navigation }) => {
         setLoading(false)
         setPhoneNumber('')
         navigation.navigate('Home', {
-          phoneNumber,
+          phoneNumber: phoneCheckResult.data.phoneNumber,
+          name: phoneCheckResult.data.name,
         })
       } else {
         setLoading(false)
