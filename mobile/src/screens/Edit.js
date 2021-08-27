@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://2903-129-18-193-45.ngrok.io'
+  const base_url = 'https://d852-129-18-193-45.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -32,24 +32,28 @@ const Edit = ({ route, navigation }) => {
     ])
   }
   const successHandler = (value) =>
-    Alert.alert('Edit Successful!', `Successfully edited ${value}`, [
-      {
-        text: 'Close',
-        onPress: () => {
-          value === 'name'
-            ? navigation.navigate({
-                name: 'Home',
-                params: { name },
-                merge: true,
-              })
-            : navigation.navigate({
-                name: 'Home',
-                params: { phoneNumber },
-                merge: true,
-              })
+    Alert.alert(
+      'Successful!',
+      `Successfully ${usersName ? 'added' : 'edited'} ${value}`,
+      [
+        {
+          text: 'Close',
+          onPress: () => {
+            value === 'name'
+              ? navigation.navigate({
+                  name: 'Home',
+                  params: { name },
+                  merge: true,
+                })
+              : navigation.navigate({
+                  name: 'Home',
+                  params: { phoneNumber },
+                  merge: true,
+                })
+          },
         },
-      },
-    ])
+      ],
+    )
 
   const editHandler = async () => {
     // check if it's the user's name that was edited and we also passed in a phone number prop from the previous route
@@ -89,7 +93,7 @@ const Edit = ({ route, navigation }) => {
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     } else if (phoneNumber) {
-      const body = { phone_number: phoneNumber }
+      const body = { phone_number: usersPhoneNumber }
 
       setLoading(true)
 
@@ -115,8 +119,9 @@ const Edit = ({ route, navigation }) => {
 
         await TruSDK.openCheckUrl(data.data.checkUrl)
 
+        // pass the new phone number and old phone number as query params
         const resp = await fetch(
-          `${base_url}/api/edit?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
+          `${base_url}/api/edit?check_id=${data.data.checkId}&old_phone_number=${usersPhoneNumber}&new_phone_number=${phoneNumber}`,
         )
 
         const SubscriberCheckResult = await resp.json()
@@ -152,7 +157,7 @@ const Edit = ({ route, navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Edit</Text>
-          {name || (!name && !phoneNumber) ? (
+          {name || (typeof name !== 'undefined' && phoneNumber) ? (
             <TextInput
               style={styles.textInput}
               placeholder="Name"
@@ -183,7 +188,9 @@ const Edit = ({ route, navigation }) => {
             />
           ) : (
             <TouchableOpacity onPress={editHandler} style={styles.button}>
-              <Text style={styles.buttonText}>Edit</Text>
+              <Text style={styles.buttonText}>
+                {usersName ? 'Edit' : 'Add'}
+              </Text>
             </TouchableOpacity>
           )}
         </View>
