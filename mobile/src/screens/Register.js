@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-  Image
+  Image,
 } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
@@ -53,7 +53,7 @@ const Register = ({ navigation }) => {
       console.log(data)
       // open Check URL
 
-      await TruSDK.openCheckUrl(data.data.checkUrl)
+      await TruSDK.check(data.data.checkUrl)
 
       const resp = await fetch(
         `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,
@@ -82,7 +82,7 @@ const Register = ({ navigation }) => {
   }
 
   return (
-     <LinearGradient
+    <LinearGradient
       colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
       useAngle={true}
       angle={0}
@@ -92,34 +92,34 @@ const Register = ({ navigation }) => {
     >
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
-        <Image
-          style={styles.logo}
-          source={require('../images/tru-logo.png')}
-        />
-        <Text style={styles.heading}>Register</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Number ex. +448023432345"
-          placeholderTextColor="#d3d3d3"
-          keyboardType="phone-pad"
-          value={phoneNumber}
-          editable={!loading}
-          onChangeText={(value) => setPhoneNumber(value.replace(/\s+/g, ''))}
-        />
-        {loading ? (
-          <ActivityIndicator
-            style={styles.spinner}
-            size="large"
-            color="#00ff00"
+          <Image
+            style={styles.logo}
+            source={require('../images/tru-logo.png')}
           />
-        ) : (
-          <TouchableOpacity onPress={registerHandler} style={styles.button}>
-            <Text style={styles.buttonText}>Register</Text>
-          </TouchableOpacity>
-        )}
-      </View>
-    </SafeAreaView>
-</LinearGradient>
+          <Text style={styles.heading}>Register</Text>
+          <TextInput
+            style={styles.textInput}
+            placeholder="Number ex. +448023432345"
+            placeholderTextColor="#d3d3d3"
+            keyboardType="phone-pad"
+            value={phoneNumber}
+            editable={!loading}
+            onChangeText={(value) => setPhoneNumber(value.replace(/\s+/g, ''))}
+          />
+          {loading ? (
+            <ActivityIndicator
+              style={styles.spinner}
+              size="large"
+              color="#00ff00"
+            />
+          ) : (
+            <TouchableOpacity onPress={registerHandler} style={styles.button}>
+              <Text style={styles.buttonText}>Register</Text>
+            </TouchableOpacity>
+          )}
+        </View>
+      </SafeAreaView>
+    </LinearGradient>
   )
 }
 const styles = StyleSheet.create({
