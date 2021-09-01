@@ -93,9 +93,9 @@ const Register = ({ navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
         <Image
-              style={styles.logo}
-              source={require('./images/tru-logo.png')}
-            />
+          style={styles.logo}
+          source={require('../images/tru-logo.png')}
+        />
         <Text style={styles.heading}>Register</Text>
         <TextInput
           style={styles.textInput}
