@@ -53,7 +53,7 @@ const Register = ({ navigation }) => {
 
       // open Check URL
 
-      await TruSDK.openCheckUrl(data.data.checkUrl)
+      await TruSDK.check(data.data.checkUrl)
 
       const resp = await fetch(
         `${base_url}/api/register?check_id=${data.data.checkId}&phone_number=${phoneNumber}`,

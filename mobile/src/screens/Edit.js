@@ -117,7 +117,7 @@ const Edit = ({ route, navigation }) => {
 
         // open Check URL
 
-        await TruSDK.openCheckUrl(data.data.checkUrl)
+        await TruSDK.check(data.data.checkUrl)
 
         // pass the new phone number and old phone number as query params
         const resp = await fetch(
