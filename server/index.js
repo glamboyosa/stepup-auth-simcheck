@@ -157,11 +157,17 @@ app.post('/api/edit', async (req, res) => {
         }
       }
     } else if (value === 'phone_number') {
-      const { checkId, checkUrl } = await createSubscriberCheck(phone_number)
-      return res.status(201).send({
-        data: { checkId, checkUrl },
-        message: 'SubscriberCheck created',
-      })
+      const { checkId, checkUrl, numberSupported } =
+        await createSubscriberCheck(phone_number)
+
+      if (!numberSupported) {
+        return res.status(400).send({ message: 'number not supported' })
+      } else {
+        return res.status(201).send({
+          data: { checkId, checkUrl },
+          message: 'PhoneCheck created',
+        })
+      }
     }
   } catch (e) {
     console.log(JSON.stringify(e))

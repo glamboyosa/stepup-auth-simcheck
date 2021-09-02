@@ -16,7 +16,7 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://d852-129-18-193-45.ngrok.io'
+  const base_url = 'https://a2ed-185-107-80-218.ngrok.io'
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
@@ -113,6 +113,14 @@ const Edit = ({ route, navigation }) => {
 
         const data = await response.json()
 
+        if (!data.data) {
+          errorHandler({
+            title: 'Something went wrong',
+            message: 'Number not supported',
+          })
+
+          return
+        }
         console.log(data)
 
         // open Check URL
