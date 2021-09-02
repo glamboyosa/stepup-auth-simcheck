@@ -24,4 +24,5 @@ const Screens = () => (
     </Stack.Navigator>
   </NavigationContainer>
 )
+
 export default Screens

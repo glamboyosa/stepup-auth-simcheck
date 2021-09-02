@@ -9,6 +9,7 @@ exports.createAccessToken = async (scope) => {
   const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
     'base64',
   )
+  
   const resp = await fetch(`https://eu.api.tru.id/oauth2/v1/token`, {
     method: 'POST',
     body: `grant_type=client_credentials&scope=${scope}`,
@@ -17,6 +18,8 @@ exports.createAccessToken = async (scope) => {
       Authorization: `Basic ${basicAuth}`,
     },
   })
+
   const { access_token } = await resp.json()
+
   return access_token
 }

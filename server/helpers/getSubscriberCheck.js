@@ -3,6 +3,7 @@ const { createAccessToken } = require('./createAccessToken')
 
 exports.getSubscriberCheck = async (checkId) => {
   const accessToken = await createAccessToken('subscriber_check')
+
   const response = await fetch(
     `https://eu.api.tru.id/subscriber_check/v0.1/checks/${checkId}`,
     {
@@ -16,5 +17,6 @@ exports.getSubscriberCheck = async (checkId) => {
 
   const data = await response.json()
   console.log(data)
+
   return { match: data.match, simChanged: !data.no_sim_change }
 }
