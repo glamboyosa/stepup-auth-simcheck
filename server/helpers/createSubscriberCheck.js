@@ -1,11 +1,14 @@
 const fetch = require('node-fetch')
 const { createAccessToken } = require('./createAccessToken')
+
 exports.createSubscriberCheck = async (phoneNumber) => {
   let checkUrl
   let checkId
   let numberSupported = true
+
   const accessToken = await createAccessToken('subscriber_check')
   const body = JSON.stringify({ phone_number: phoneNumber })
+
   const response = await fetch(
     `https://eu.api.tru.id/subscriber_check/v0.1/checks`,
     {
@@ -33,5 +36,6 @@ exports.createSubscriberCheck = async (phoneNumber) => {
       response.toString(),
     )
   }
+
   return { checkId, checkUrl, numberSupported }
 }

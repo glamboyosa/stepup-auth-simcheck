@@ -16,9 +16,11 @@ import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://a2ed-185-107-80-218.ngrok.io'
+  const base_url = '<YOUR NGROK URL>'
+
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
+
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
   const [name, setName] = useState(usersName)
   const [loading, setLoading] = useState(false)
@@ -31,6 +33,7 @@ const Edit = ({ route, navigation }) => {
       },
     ])
   }
+
   const successHandler = (value) =>
     Alert.alert(
       'Successful!',
@@ -83,6 +86,7 @@ const Edit = ({ route, navigation }) => {
           successHandler('name')
         } else {
           setLoading(false)
+
           errorHandler({
             title: 'Something went wrong',
             message: 'Failed to edit name.',
@@ -90,6 +94,7 @@ const Edit = ({ route, navigation }) => {
         }
       } catch (e) {
         setLoading(false)
+
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     } else if (phoneNumber) {
@@ -124,7 +129,6 @@ const Edit = ({ route, navigation }) => {
         console.log(data)
 
         // open Check URL
-
         await TruSDK.check(data.data.checkUrl)
 
         // pass the new phone number and old phone number as query params
@@ -139,9 +143,11 @@ const Edit = ({ route, navigation }) => {
           SubscriberCheckResult.data.match
         ) {
           setLoading(false)
+
           successHandler('number')
         } else {
           setLoading(false)
+
           errorHandler({
             title: 'Something went wrong',
             message: 'Failed to edit phone number',
@@ -149,10 +155,12 @@ const Edit = ({ route, navigation }) => {
         }
       } catch (e) {
         setLoading(false)
+
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     }
   }
+
   return (
     <LinearGradient
       colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
@@ -266,4 +274,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 })
+
 export default Edit

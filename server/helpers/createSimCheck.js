@@ -1,9 +1,12 @@
 const fetch = require('node-fetch')
 const { createAccessToken } = require('./createAccessToken')
+
 exports.createSimCheck = async (phoneNumber) => {
   let simChanged
+
   const accessToken = await createAccessToken('sim_check')
   const body = JSON.stringify({ phone_number: phoneNumber })
+
   const response = await fetch(`https://eu.api.tru.id/sim_check/v0.1/checks`, {
     method: 'POST',
     body,
@@ -24,5 +27,6 @@ exports.createSimCheck = async (phoneNumber) => {
       response.toString(),
     )
   }
+
   return { simChanged }
 }

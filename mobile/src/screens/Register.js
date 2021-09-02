@@ -16,9 +16,11 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
+
 const Register = ({ navigation }) => {
   // server ngrok url
-  const base_url = 'https://a2ed-185-107-80-218.ngrok.io'
+  const base_url = '<YOUR NGROK URL>'
+
   const [phoneNumber, setPhoneNumber] = useState('')
   const [loading, setLoading] = useState(false)
 
@@ -52,7 +54,6 @@ const Register = ({ navigation }) => {
       console.log(data)
 
       // open Check URL
-
       await TruSDK.check(data.data.checkUrl)
 
       const resp = await fetch(
@@ -66,12 +67,14 @@ const Register = ({ navigation }) => {
       if (phoneCheckResult.data.match) {
         setLoading(false)
         setPhoneNumber('')
+
         navigation.navigate('Home', {
           phoneNumber: phoneCheckResult.data.phoneNumber,
           name: phoneCheckResult.data.name,
         })
       } else {
         setLoading(false)
+
         errorHandler({
           title: 'Registration Failed',
           message: 'PhoneCheck match failed. Please contact support',
@@ -79,6 +82,7 @@ const Register = ({ navigation }) => {
       }
     } catch (e) {
       setLoading(false)
+
       errorHandler({ title: 'Something went wrong', message: e.message })
     }
   }
