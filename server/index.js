@@ -39,7 +39,6 @@ app.post('/api/register', async (req, res) => {
 })
 
 // get PhoneCheck response
-
 app.get('/api/register', async (req, res) => {
   // get the `check_id` from the query parameter
   const { check_id: checkId, phone_number } = req.query
@@ -111,7 +110,7 @@ app.get('/api/register', async (req, res) => {
 app.post('/api/edit', async (req, res) => {
   const { value } = req.query
   const { name, phone_number } = req.body
-  console.log(phone_number)
+
   try {
     if (value === 'name') {
       const users = await get('users')
@@ -129,7 +128,6 @@ app.post('/api/edit', async (req, res) => {
         )
         // if we have a user with that phone number, update phone number
         if (currentUser) {
-          console.log(currentUser.phone_number.trim())
           const { simChanged } = await createSimCheck(
             currentUser.phone_number.trim(),
           )
@@ -158,7 +156,7 @@ app.post('/api/edit', async (req, res) => {
       }
     } else if (value === 'phone_number') {
       const { checkId, checkUrl, numberSupported } =
-        await createSubscriberCheck(phone_number)
+        await createSubscriberCheck(phone_number.trim())
 
       if (!numberSupported) {
         return res.status(400).send({ message: 'number not supported' })
@@ -185,6 +183,7 @@ app.get('/api/edit', async (req, res) => {
 
     if (match && !simChanged) {
       const users = await get('users')
+
       if (users) {
         const currentUsers = JSON.parse(users)
 
@@ -193,6 +192,7 @@ app.get('/api/edit', async (req, res) => {
           if (el.phone_number === old_phone_number) {
             el.phone_number = new_phone_number
           }
+
           return el
         })
 
@@ -202,11 +202,17 @@ app.get('/api/edit', async (req, res) => {
           JSON.stringify(updatedUsers),
         )
       }
+
+      res
+      .status(200)
+      .send({ data: { match, simChanged, phoneNumber: new_phone_number } })
+    } else {
+      res
+      .status(400)
+      .send({})
     }
 
-    res
-      .status(200)
-      .send({ data: { match, simChanged, phoneNumber: phone_number } })
+
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })

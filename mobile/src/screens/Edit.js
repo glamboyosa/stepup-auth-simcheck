@@ -15,6 +15,7 @@ import {
 import LinearGradient from 'react-native-linear-gradient'
 
 import TruSDK from '@tru_id/tru-sdk-react-native'
+
 const Edit = ({ route, navigation }) => {
   const base_url = '<YOUR NGROK URL>'
 
@@ -98,7 +99,7 @@ const Edit = ({ route, navigation }) => {
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     } else if (phoneNumber) {
-      const body = { phone_number: usersPhoneNumber }
+      const body = { phone_number: phoneNumber.trim() }
 
       setLoading(true)
 
@@ -119,6 +120,8 @@ const Edit = ({ route, navigation }) => {
         const data = await response.json()
 
         if (!data.data) {
+          setLoading(false)
+
           errorHandler({
             title: 'Something went wrong',
             message: 'Number not supported',
@@ -126,17 +129,27 @@ const Edit = ({ route, navigation }) => {
 
           return
         }
-        console.log(data)
 
         // open Check URL
         await TruSDK.check(data.data.checkUrl)
 
         // pass the new phone number and old phone number as query params
         const resp = await fetch(
-          `${base_url}/api/edit?check_id=${data.data.checkId}&old_phone_number=${usersPhoneNumber}&new_phone_number=${phoneNumber}`,
+          `${base_url}/api/edit?check_id=${data.data.checkId}&old_phone_number=${usersPhoneNumber.trim()}&new_phone_number=${phoneNumber.trim()}`,
         )
 
         const SubscriberCheckResult = await resp.json()
+
+        if (resp.status !== 200) {
+          setLoading(false)
+
+          errorHandler({
+            title: 'Something went wrong',
+            message: 'Failed to edit phone number',
+          })
+
+          return
+        }
 
         if (
           !SubscriberCheckResult.data.simChanged &&

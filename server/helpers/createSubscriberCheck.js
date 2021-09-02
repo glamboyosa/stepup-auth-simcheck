@@ -7,7 +7,7 @@ exports.createSubscriberCheck = async (phoneNumber) => {
   let numberSupported = true
 
   const accessToken = await createAccessToken('subscriber_check')
-  const body = JSON.stringify({ phone_number: phoneNumber })
+  const body = JSON.stringify({ phone_number: phoneNumber.trim() })
 
   const response = await fetch(
     `https://eu.api.tru.id/subscriber_check/v0.1/checks`,
