@@ -19,7 +19,7 @@ import TruSDK from '@tru_id/tru-sdk-react-native'
 
 const Register = ({ navigation }) => {
   // server ngrok url
-  const base_url = 'https://serverngrokurl.ngrok.io'
+  const base_url = '<YOUR NGROK URL>'
   const [phoneNumber, setPhoneNumber] = useState('')
   const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
@@ -32,6 +32,7 @@ const Register = ({ navigation }) => {
       },
     ])
   }
+
   const registerHandler = async () => {
     const body = { phone_number: phoneNumber }
 
@@ -64,12 +65,14 @@ const Register = ({ navigation }) => {
       if (phoneCheckResult.data.match) {
         setLoading(false)
         setPhoneNumber('')
+
         navigation.navigate('Home', {
           phoneNumber: phoneCheckResult.data.phoneNumber,
           name: phoneCheckResult.data.name,
         })
       } else {
         setLoading(false)
+
         errorHandler({
           title: 'Registration Failed',
           message: 'PhoneCheck match failed. Please contact support',
@@ -122,6 +125,7 @@ const Register = ({ navigation }) => {
     </LinearGradient>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -186,4 +190,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 })
+
 export default Register

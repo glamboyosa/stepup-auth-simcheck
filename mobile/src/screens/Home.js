@@ -1,12 +1,13 @@
 import React from 'react'
 
-import { SafeAreaView, View, Text, StyleSheet , Dimensions} from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, Dimensions} from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
 
 const Home = ({ route, navigation }) => {
   const { params } = route
   const { name, phoneNumber } = params
+
   return (
     <LinearGradient
       colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
@@ -24,6 +25,7 @@ const Home = ({ route, navigation }) => {
     </LinearGradient>
   )
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -94,4 +96,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 })
+
 export default Home

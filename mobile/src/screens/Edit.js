@@ -11,13 +11,17 @@ import {
   ActivityIndicator,
   Alert,
 } from 'react-native'
+
 import LinearGradient from 'react-native-linear-gradient'
 
 const Edit = ({ route, navigation }) => {
-  const base_url = 'https://serverngrokurl.ngrok.io'
+  const base_url = '<YOUR NGROK URL>'
+
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
+
   const editHandler = () => {}
+
   return (
     <LinearGradient
       colors={['rgba(25, 85, 255, 40)', 'rgba(10, 10, 50, 66)']}
@@ -95,4 +99,5 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 })
+
 export default Edit
