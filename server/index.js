@@ -37,7 +37,7 @@ app.post('/api/register', async (req, res) => {
 // get PhoneCheck response
 app.get('/api/register', async (req, res) => {
   // get the `check_id` from the query parameter
-  const { check_id: checkId, } = req.query
+  const { check_id: checkId, phone_number } = req.query
 
   try {
     // get the PhoneCheck response
