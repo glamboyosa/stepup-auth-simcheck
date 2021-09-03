@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { SafeAreaView, View, Text, StyleSheet, Dimensions} from 'react-native'
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
 
