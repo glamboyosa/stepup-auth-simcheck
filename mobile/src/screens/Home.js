@@ -20,6 +20,54 @@ const Home = ({ route, navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Home 🏡</Text>
+  
+          <View>
+            <Text style={styles.label}>Name</Text>
+            <View style={styles.list}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="No name yet"
+                placeholderTextColor="#d3d3d3"
+                value={name}
+                editable={false}
+              />
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Edit', {
+                    name,
+                    phoneNumber,
+                  })
+                }
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+  
+          <View>
+            <Text style={styles.label}>Phone Number</Text>
+            <View style={styles.list}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="Number ex. +448023432345"
+                placeholderTextColor="#d3d3d3"
+                value={phoneNumber}
+                editable={false}
+              />
+  
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate('Edit', {
+                    phoneNumber,
+                  })
+                }
+                style={styles.button}
+              >
+                <Text style={styles.buttonText}>Edit</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </SafeAreaView>
     </LinearGradient>
