@@ -1,13 +1,6 @@
 import React from 'react'
-import {
-  SafeAreaView,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  TextInput,
-} from 'react-native'
+
+import { SafeAreaView, View, Text, StyleSheet, Dimensions, TextInput, TouchableOpacity } from 'react-native'
 
 import LinearGradient from 'react-native-linear-gradient'
 
@@ -27,7 +20,7 @@ const Home = ({ route, navigation }) => {
       <SafeAreaView style={styles.container}>
         <View style={styles.box}>
           <Text style={styles.heading}>Home 🏡</Text>
-
+  
           <View>
             <Text style={styles.label}>Name</Text>
             <View style={styles.list}>
@@ -51,7 +44,7 @@ const Home = ({ route, navigation }) => {
               </TouchableOpacity>
             </View>
           </View>
-
+  
           <View>
             <Text style={styles.label}>Phone Number</Text>
             <View style={styles.list}>
@@ -62,7 +55,7 @@ const Home = ({ route, navigation }) => {
                 value={phoneNumber}
                 editable={false}
               />
-
+  
               <TouchableOpacity
                 onPress={() =>
                   navigation.navigate('Edit', {
@@ -138,13 +131,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: '#1955ff',
-    borderColor: '#1955ff',
-    marginTop: -15,
     color: '#fff',
     paddingVertical: 10,
     paddingHorizontal: 12,
     borderRadius: 5,
-    width: '25%',
+    borderWidth: 2,
+    borderColor: '#1955ff',
+    marginTop: 17,
+    width: '40%',
   },
   buttonText: {
     color: '#fff',

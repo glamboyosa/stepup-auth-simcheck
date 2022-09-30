@@ -5,7 +5,7 @@ exports.getPhoneCheck = async (checkId) => {
   const accessToken = await createAccessToken('phone_check')
 
   const response = await fetch(
-    `https://eu.api.tru.id/phone_check/v0.1/checks/${checkId}`,
+    `https://eu.api.tru.id/phone_check/v0.2/checks/${checkId}`,
     {
       method: 'GET',
       headers: {

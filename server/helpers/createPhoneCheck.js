@@ -8,8 +8,9 @@ exports.createPhoneCheck = async (phoneNumber) => {
 
   const accessToken = await createAccessToken('phone_check')
   const body = JSON.stringify({ phone_number: phoneNumber })
+
   const response = await fetch(
-    `https://eu.api.tru.id/phone_check/v0.1/checks`,
+    `https://eu.api.tru.id/phone_check/v0.2/checks`,
     {
       method: 'POST',
       body,

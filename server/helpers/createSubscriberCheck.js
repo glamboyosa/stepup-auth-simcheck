@@ -10,7 +10,7 @@ exports.createSubscriberCheck = async (phoneNumber) => {
   const body = JSON.stringify({ phone_number: phoneNumber.trim() })
 
   const response = await fetch(
-    `https://eu.api.tru.id/subscriber_check/v0.1/checks`,
+    `https://eu.api.tru.id/subscriber_check/v0.2/checks`,
     {
       method: 'POST',
       body,
@@ -23,6 +23,7 @@ exports.createSubscriberCheck = async (phoneNumber) => {
 
   if (response.status === 201) {
     const data = await response.json()
+
     console.log(data)
 
     checkUrl = data._links.check_url.href

@@ -1,25 +1,26 @@
 const express = require('express')
 const morgan = require('morgan')
 const { createPhoneCheck } = require('./helpers/createPhoneCheck')
+const { getPhoneCheck } = require('./helpers/getPhoneCheck')
+const { patchPhoneCheck } = require('./helpers/patchPhoneCheck')
+const { promisify } = require('util')
+const { redisClient } = require('./helpers/redisClient')
 const { createSimCheck } = require('./helpers/createSimCheck')
 const { createSubscriberCheck } = require('./helpers/createSubscriberCheck')
-const { getPhoneCheck } = require('./helpers/getPhoneCheck')
-const { getSubscriberCheck } = require('./helpers/getSubscriberCheck')
-const { redisClient } = require('./helpers/redisClient')
-const { promisify } = require('util')
-const get = promisify(redisClient.get).bind(redisClient)
+const { patchSubscriberCheck } = require('./helpers/patchSubscriberCheck')
 
 const app = express()
+var get
 
 app.use(express.json())
 app.use(morgan('dev'))
+
 // create PhoneCheck
 app.post('/api/register', async (req, res) => {
   const { phone_number: phoneNumber } = req.body
 
   try {
     // create PhoneCheck resource
-
     const { checkId, checkUrl, numberSupported } = await createPhoneCheck(
       phoneNumber,
     )
@@ -38,53 +39,48 @@ app.post('/api/register', async (req, res) => {
   }
 })
 
-// get PhoneCheck response
-app.get('/api/register', async (req, res) => {
+// complete PhoneCheck
+app.post('/api/exchange-code', async (req, res) => {
   // get the `check_id` from the query parameter
-  const { check_id: checkId, phone_number } = req.query
+  const { check_id: checkId, code: code } = req.body
 
   try {
     // get the PhoneCheck response
-    const { match } = await getPhoneCheck(checkId)
+    const { patchResponseStatus, patchResponse } = await patchPhoneCheck(checkId, code)
 
-    if (match) {
+    if (patchResponseStatus === 200 && patchResponse.match === true) {
       const users = await get('users')
 
-      // check if there is are users
       if (users) {
         const oldUsers = JSON.parse(users)
         // check if we have a user with that phone number, get it and also filter out the existing user from our array
         // POINT BEING THE USER WANTS TO RE-REGISTER WITH THE SAME PHONE NUMBER
-        const existingUser = oldUsers.find(
-          (el) => el.phone_number === phone_number,
-        )
-
+        const existingUser = oldUsers.find((el) => el.phone_number === phone_number)
+    
         const updatedUsers = oldUsers.filter(
           (el) => el.phone_number !== phone_number,
         )
-
+    
         // check if we have users, if we do, update the phone number
         if (existingUser) {
           existingUser.phone_number = phone_number
           existingUser.name = ''
           // add the updated user back and set the users to redis
-
+    
           updatedUsers.push(existingUser)
-
-          redisClient.setex(
-            'users',
-            60 * 60 * 24 * 7,
-            JSON.stringify(updatedUsers),
-          )
+    
+          redisClient.setex('users', 60 * 60 * 24 * 7, JSON.stringify(updatedUsers))
           return res.status(200).send({
-            data: { match, phoneNumber: phone_number, name: '' },
+            data: { match: patchResponse.match, phoneNumber: phone_number, name: '' },
           })
         }
+
         // we have old users but user has never registered before
         const userProperties = {
           phone_number,
           name: '',
         }
+
         oldUsers.push(userProperties)
 
         redisClient.setex('users', 60 * 60 * 24 * 7, JSON.stringify(oldUsers))
@@ -93,14 +89,15 @@ app.get('/api/register', async (req, res) => {
           phone_number,
           name: '',
         }
+
         const users = []
+
         users.push(userProperties)
         redisClient.setex('users', 60 * 60 * 24 * 7, JSON.stringify(users))
       }
     }
-    res
-      .status(200)
-      .send({ data: { match, phoneNumber: phone_number, name: '' } })
+
+    res.status(200).send({ data: { match: patchResponse.match, phoneNumber: phone_number, name: '' } })
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
@@ -179,11 +176,10 @@ app.get('/api/edit', async (req, res) => {
 
   try {
     // get the SubscriberCheck response
-    const { match, simChanged } = await getSubscriberCheck(checkId)
+    const { match, simChanged } = await patchSubscriberCheck(checkId, code)
 
     if (match && !simChanged) {
       const users = await get('users')
-
       if (users) {
         const currentUsers = JSON.parse(users)
 
@@ -192,7 +188,6 @@ app.get('/api/edit', async (req, res) => {
           if (el.phone_number === old_phone_number) {
             el.phone_number = new_phone_number
           }
-
           return el
         })
 
@@ -204,21 +199,21 @@ app.get('/api/edit', async (req, res) => {
       }
 
       res
-      .status(200)
-      .send({ data: { match, simChanged, phoneNumber: new_phone_number } })
+        .status(200)
+        .send({ data: { match, simChanged, phoneNumber: new_phone_number } })
     } else {
-      res
-      .status(400)
-      .send({})
+      res.status(400).send({})
     }
-
-
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
   }
 })
+
 // setup server
-app.listen(4000, () => {
+app.listen(4000, async () => {
+  await redisClient.connect()
+  get = promisify(redisClient.get).bind(redisClient)
+
   console.log('listening on PORT 4000')
 })

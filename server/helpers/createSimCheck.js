@@ -14,10 +14,11 @@ exports.createSimCheck = async (phoneNumber) => {
       Authorization: `Bearer ${accessToken}`,
       'Content-Type': 'application/json',
     },
-  })
+  )
 
   if (response.status === 201) {
     const data = await response.json()
+
     console.log(data)
 
     simChanged = !data.no_sim_change
