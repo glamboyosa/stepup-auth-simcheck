@@ -1,11 +1,11 @@
 const fetch = require('node-fetch')
 const { createAccessToken } = require('./createAccessToken')
 
-exports.getPhoneCheck = async (checkId) => {
-  const accessToken = await createAccessToken('phone_check')
+exports.getSubscriberCheck = async (checkId) => {
+  const accessToken = await createAccessToken('subscriber_check')
 
   const response = await fetch(
-    `https://eu.api.tru.id/phone_check/v0.2/checks/${checkId}`,
+    `https://eu.api.tru.id/subscriber_check/v0.1/checks/${checkId}`,
     {
       method: 'GET',
       headers: {
@@ -15,11 +15,8 @@ exports.getPhoneCheck = async (checkId) => {
     },
   )
 
-  console.log('do we have a response')
-
   const data = await response.json()
-
   console.log(data)
 
-  return { match: data.match }
+  return { match: data.match, simChanged: !data.no_sim_change }
 }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useState } from 'react'
 
 import {
   SafeAreaView,
@@ -20,7 +20,6 @@ const Register = ({ navigation }) => {
   // server ngrok url
   const base_url = '{YOUR_NGROK_URL}'
   const [phoneNumber, setPhoneNumber] = useState('')
-  const [name, setName] = useState('')
   const [loading, setLoading] = useState(false)
 
   const errorHandler = ({ title, message }) => {
@@ -173,6 +172,7 @@ const Register = ({ navigation }) => {
       }
     } catch (e) {
       setLoading(false)
+
       errorHandler({ title: 'Something went wrong', message: e.message })
     }
   }

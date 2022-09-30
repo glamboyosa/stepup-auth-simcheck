@@ -32,14 +32,11 @@ npm i -g @tru_id/cli
 
 Set up the CLI with the **tru.ID** credentials which can be found within the tru.ID [console](https://developer.tru.id/console).
 
-
-
 Create a new project via:
 
 ```bash
 tru projects:create stepup-auth-simcheck --project-dir .
 ```
-
 
 ## Starting Project
 
@@ -66,6 +63,8 @@ This will give you a `https` website e.g.
 https://0d834043fe8d.ngrok.io -> http://localhost:4000
 ```
 
+Update `base_url` value in both `Edit.js` and `Register.js` found in the path: `mobile/src/screens/` with your ngrok URL.
+
 To start the mobile application first open up a new terminal and install dependencies via:
 
 ```bash
@@ -80,7 +79,6 @@ npm run android
 npx pod-install
 npm run ios
 ```
-
 
 ## References
 

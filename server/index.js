@@ -26,15 +26,13 @@ app.post('/api/register', async (req, res) => {
     )
 
     if (!numberSupported) {
-      res.status(400).send({ message: 'number not supported' })
-
-      return
+      return res.status(400).send({ message: 'number not supported' })
+    } else {
+      return res.status(201).send({
+        data: { checkId, checkUrl },
+        message: 'PhoneCheck created',
+      })
     }
-
-    res.status(201).send({
-      data: { checkId, checkUrl },
-      message: 'PhoneCheck created',
-    })
   } catch (e) {
     console.log(JSON.stringify(e))
     res.status(500).send({ message: e.message })
@@ -118,7 +116,6 @@ app.post('/api/edit', async (req, res) => {
         const currentUsers = JSON.parse(users)
 
         console.log('current users for edit / add name are', currentUsers)
-
         const currentUser = currentUsers.find(
           (el) => el.phone_number === phone_number,
         )
@@ -128,8 +125,6 @@ app.post('/api/edit', async (req, res) => {
         )
         // if we have a user with that phone number, update phone number
         if (currentUser) {
-          console.log(currentUser.phone_number.trim())
-
           const { simChanged } = await createSimCheck(
             currentUser.phone_number.trim(),
           )
@@ -145,13 +140,11 @@ app.post('/api/edit', async (req, res) => {
               60 * 60 * 24 * 7,
               JSON.stringify(otherUsers),
             )
-
             return res.status(201).send({
               data: { simChanged, name },
               message: 'SIMCheck created',
             })
           }
-
           return res.status(201).send({
             data: { simChanged, name },
             message: 'SIMCheck created',

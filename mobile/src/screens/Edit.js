@@ -20,6 +20,7 @@ const Edit = ({ route, navigation }) => {
 
   const { params } = route
   const { name: usersName, phoneNumber: usersPhoneNumber } = params
+
   const [phoneNumber, setPhoneNumber] = useState(usersPhoneNumber)
   const [name, setName] = useState(usersName)
   const [loading, setLoading] = useState(false)
@@ -67,6 +68,7 @@ const Edit = ({ route, navigation }) => {
         }
       } catch (e) {
         setLoading(false)
+
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     } else if (phoneNumber) {
@@ -77,38 +79,50 @@ const Edit = ({ route, navigation }) => {
       console.log('creating SubscriberCheck for', body)
   
       try {
-        const response = await fetch(`${base_url}/api/edit?value=phone_number`, {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'Content-Type': 'application/json',
+        const response = await fetch(
+          `${base_url}/api/edit?value=phone_number`,
+          {
+            method: 'POST',
+            body: JSON.stringify(body),
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        })
-  
+        )
+
         const data = await response.json()
-  
-        console.log(data)
-  
+
         if (!data.data) {
-           errorHandler({
-              title: 'Something went wrong',
-              message: 'Number not supported',
-            })
-  
-            return
+          setLoading(false)
+
+          errorHandler({
+            title: 'Something went wrong',
+            message: 'Number not supported',
+          })
+
+          return
         }
 
         // open Check URL
-        const checkResponse = await TruSdkReactNative.openWithDataCellular(
-          response.data.check_url
-        );
+        await TruSDK.check(data.data.checkUrl)
 
         // pass the new phone number and old phone number as query params
         const resp = await fetch(
-          `${base_url}/api/edit?check_id=${checkResponse.response_body.check_id}&code=${checkResponse.response_body.code}&old_phone_number=${usersPhoneNumber.trim()}&new_phone_number=${phoneNumber.trim()}`,
+          `${base_url}/api/edit?check_id=${data.data.checkId}&old_phone_number=${usersPhoneNumber.trim()}&new_phone_number=${phoneNumber.trim()}`,
         )
 
         const subscriberCheckResult = await resp.json()
+
+        if (resp.status !== 200) {
+          setLoading(false)
+
+          errorHandler({
+            title: 'Something went wrong',
+            message: 'Failed to edit phone number',
+          })
+
+          return
+        }
 
         if (resp.status !== 200) {
           setLoading(false)
@@ -136,6 +150,7 @@ const Edit = ({ route, navigation }) => {
         }
       } catch (e) {
         setLoading(false)
+
         errorHandler({ title: 'Something went wrong', message: e.message })
       }
     }
